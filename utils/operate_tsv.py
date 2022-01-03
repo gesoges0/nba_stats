@@ -43,3 +43,15 @@ def write_tsv_from_dict_list(tsv_path: Path, dict_list: List[Dict[str, Any]]) ->
     for _dict in dict_list:
         rows.append(list(_dict.values()))
     write_tsv(tsv_path, rows)
+
+
+def read_all_rows_from_tsv(tsv_path: Path, read_header: bool = False) -> List[List[Any]]:
+    with open(tsv_path, 'r') as f:
+        rows = []
+        reader = csv.reader(f, delimiter='\t')
+        header = next(reader)
+        if read_header:
+            rows.append(header)
+        for row in reader:
+            rows.append(row)
+        return rows
