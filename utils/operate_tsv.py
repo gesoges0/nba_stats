@@ -1,6 +1,6 @@
 import csv
 from pathlib import Path
-from typing import List, Any, Iterable
+from typing import List, Dict, Any, Iterable
 
 
 def write_tsv(tsv_path: Path, rows: List[Any]) -> None:
@@ -28,3 +28,18 @@ def read_tsv(tsv_path: Path, has_header: bool = True) -> Iterable[List[Any]]:
             yield header
         for row in reader:
             yield row
+
+
+def write_tsv_from_dict_list(tsv_path: Path, dict_list: List[Dict[str, Any]]) -> None:
+    """
+    :param tsv_path:
+    :param dict_list:
+    :return:
+    """
+    assert dict_list, 'listが空のため, tsvを作成できません.'
+    header = list(dict_list[0].keys())
+    rows = list()
+    rows.append(header)
+    for _dict in dict_list:
+        rows.append(list(_dict.values()))
+    write_tsv(tsv_path, rows)
