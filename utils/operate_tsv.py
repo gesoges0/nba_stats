@@ -62,6 +62,16 @@ def read_all_rows_from_tsv(tsv_path: Path, read_header: bool = False) -> List[Li
         return rows
 
 
+def tsv_to_dict_of_list(tsv_path: Path) -> List[Dict[str, Any]]:
+    results: List[Dict[str, Any]] = list()
+    with open(tsv_path, 'r') as f:
+        reader = csv.reader(f, delimiter='\t')
+        header = next(reader)
+        for row in reader:
+            results.append({k: v for k, v in zip(header, row)})
+    return results
+
+
 def tsv_to_dict_by_first_header_column(tsv_path: Path) -> Dict[str, Dict[str, Any]]:
     """
     :param tsv_path:
