@@ -54,7 +54,7 @@ if __name__ == '__main__':
         result_img: np.ndarray = make_synthetic(bg_img, team_logo_img, (920, 20))
 
         # lineup画像を背景に(23, 160)の位置に埋め込む
-        result_img: np.ndarray = make_synthetic(result_img, lineup_img, (23, 160))
+        result_img: np.ndarray = make_synthetic(result_img, lineup_img, (23, 158))
 
         # 画像書き込み
         result_img_path = output_images_dir / f'{i}.png'

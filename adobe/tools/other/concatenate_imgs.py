@@ -18,7 +18,7 @@ def concatenate_images_with_PIL(paths: List[Path], output_file_path: Path, strid
     result_image.save(output_file_path)
 
 
-def concatenate_images_with_cv2(paths: List[Path], outupt_file_path: Path, stride=0) -> None:
+def concatenate_images_with_cv2(paths: List[Path], outupt_file_path: Path, mode: str = 'h', stride=0) -> None:
     """
     CV2.IMREAD_UNCHANGEDを使い, 透過画像もそのまま読み込める
     """
@@ -29,6 +29,9 @@ def concatenate_images_with_cv2(paths: List[Path], outupt_file_path: Path, strid
             result_image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
         else:
             another_image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
-            result_image = cv2.hconcat([result_image, another_image])
+            if mode == 'h':
+                result_image = cv2.hconcat([result_image, another_image])
+            if mode == 'v':
+                result_image = cv2.vconcat([result_image, another_image])
     outupt_file_path = str(outupt_file_path)
     cv2.imwrite(outupt_file_path, result_image)
