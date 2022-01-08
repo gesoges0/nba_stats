@@ -7,7 +7,8 @@ import argparse
 from pathlib import Path
 
 # nba_statsの階層でutils等をimportする
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
+sys.path.append('/home/gesogeso/PycharmProjects/nba_stats/')
+print(sys.path)
 from utils.operate_tsv import write_tsv
 from utils.structures import Player
 from utils.time import get_current_datetime_with_yyyymmdd_format
