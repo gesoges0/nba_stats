@@ -19,10 +19,11 @@ class TmpPlayer(NamedTuple):
 
 if __name__ == '__main__':
     tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\' \
-               'analyze_00_longest_lineup\\MIN_20220103\\unique_players_list.tsv'
+               'analyze_00_longest_lineup\\MIN_20220109\\unique_players_list.tsv'
     working_dir_path = Path(f'X:\\Adobe\\PremierePro\\19_lineups')
-    output_dir_path = working_dir_path / 'images\\canvases_素材3\\output'
-    template_psd_path = working_dir_path / 'images\\canvases_素材3\\template.psd'
+    output_dir_path = working_dir_path / 'images\\lineups_20220109\\sozai_01\\output'
+    template_psd_path = working_dir_path / 'images\\lineups_20220109\\sozai_01\\template.psd'
+    imgs_dir = working_dir_path / f'images\\lineups_20220109\\sozai_00'
 
     # first_name, last_nameを引くために, player情報を持つ字書を宣言
     all_players_tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\static\\players\\all_20220103.tsv'
@@ -34,16 +35,9 @@ if __name__ == '__main__':
         player_id, *_ = row
         player_info = player_by_id[player_id]
         first_name, last_name = player_info['first_name'], player_info['last_name']
-        image_path = working_dir_path / f'images\\canvases_素材2\\{player_id}.png'
+        image_path = imgs_dir / f'{player_id}.png'
         player = TmpPlayer(player_id, first_name, last_name, image_path)
         target_player_list.append(player)
-
-    # for target_player in sorted(target_player_list, key=lambda x: -len(x.last_name))[:20]:
-    #     print(target_player.player_id, target_player.first_name, target_player.last_name)
-    # print('---------------------')
-    # for target_player in sorted(target_player_list, key=lambda x: -len(x.first_name))[:10]:
-    #     print(target_player.player_id, target_player.first_name, target_player.last_name)
-    # print('---------------------')
 
     target_player_list.sort(key=lambda x: -len(x.last_name))
 
@@ -53,7 +47,8 @@ if __name__ == '__main__':
         layers = doc.artLayers
 
         # 各選手に対して
-        for target_player in target_player_list:
+        for j, target_player in enumerate(target_player_list):
+            print(j, target_player)
 
             # 各レイヤに対して
             for i, layer in enumerate(layers):
@@ -79,3 +74,11 @@ if __name__ == '__main__':
             output_file_path = output_dir_path / f'{target_player.player_id}'
             doc.saveAs(str(output_file_path) + '.psd', ps.PhotoshopSaveOptions(), asCopy=True)
             doc.saveAs(str(output_file_path) + '.png', ps.PNGSaveOptions(), asCopy=True)
+
+        print('---------------------')
+        for i, target_player in enumerate(sorted(target_player_list, key=lambda x: -len(x.last_name))[:20]):
+            print(i, target_player.player_id, target_player.first_name, target_player.last_name)
+        print('---------------------')
+        for i, target_player in enumerate(sorted(target_player_list, key=lambda x: -len(x.first_name))[:10]):
+            print(i, target_player.player_id, target_player.first_name, target_player.last_name)
+        print('---------------------')
