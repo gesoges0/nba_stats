@@ -24,6 +24,9 @@ python curl_tsv_row.py
 出力先は`X:\Adobe\PremierePro\19_lineups\images\canvases_素材3\output`
 ```commandline
 cd adobe/video_18_lineups_ranking
+# template.psdの用意
+cp X:\Adobe\PremierePro\19_lineups\images\canvases_素材3\template.psd {作業dir}/template.psd
+mkdir {作業dir}/output
 python make_canvas.py
 ```
 

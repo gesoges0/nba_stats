@@ -1,0 +1,6 @@
+.idea
+#.gitignore
+*.pyc
+.pytest_cache/
+#static/players/*.tsv
+images/
