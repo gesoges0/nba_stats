@@ -7,7 +7,7 @@ from utils.structures import Player
 from nba_api.stats.endpoints import commonplayerinfo
 
 
-def get_players_by_id_dict() -> Player:
+def get_players_by_id_dict() -> Dict[str, Player]:
     """
     player_idから選手情報を取得
     :return: Player
