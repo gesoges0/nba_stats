@@ -500,16 +500,16 @@ def make_tsv_daily_each_game_pts_ranking(game_dict: str, stat: str) -> List[str]
             players.append((player, game.visitor_team_abbreviation))
         # statsが高い順に並び替え
         players.sort(key=lambda x: -getattr(x[0], stat) if getattr(x[0], stat) else 0)
-        result = []
+        result = list()
+        result.append(game_id)
+        result.append(game.home_team_abbreviation)
+        result.append(game.visitor_team_abbreviation)
         for i, (p, abbreviation) in enumerate(players[:10]):
-            result.append(game_id)
-            result.append(game.home_team_abbreviation)
-            result.append(game.visitor_team_abbreviation)
             result.append(p.player_id)
             result.append(p.player_name)
             result.append(abbreviation)
             result.append(getattr(p, stat))
-            result.append(i)
+            result.append(i + 1)
         results.append(result)
     return results
 
