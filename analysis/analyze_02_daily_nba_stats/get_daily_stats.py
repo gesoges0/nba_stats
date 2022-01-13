@@ -436,7 +436,7 @@ def make_tsv_daily_each_game_pts_leader(games_dict, stat):
         f'HOME_TEAM_LEADER_{stat.upper()}',
         'VISITOR_TEAM_LEADER_PLAYER_ID',
         'VISITOR_TEAM_LEADER_PLAYER_NAME',
-        f'VISITOR_TEAM_LEADER_{stat.upper()}'
+        f'VISITOR_TEAM_LEADER_{stat.upper()}',
         'GAME_LEADER_PLAYER_ID',
         'GAME_LEADER_PLAYER_NAME',
         'GAME_LEADER_PLAYER_TEAM',
