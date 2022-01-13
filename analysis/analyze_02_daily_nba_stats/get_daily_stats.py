@@ -326,7 +326,7 @@ def daily_info(target_date: str):
     from nba_api.stats.endpoints import boxscorescoringv2
     from nba_api.stats.endpoints import boxscoretraditionalv2
 
-    for game_id in games_dict.keys():
+    for game_id, game in games_dict.items():
 
         # 各ゲームの情報
 
@@ -404,39 +404,140 @@ def daily_info(target_date: str):
             else:
                 games_dict[game_id].visitor_team_info.team_stats = team_stats
 
-        return games_dict
+    return games_dict
 
 
 def make_initial_enviroment(target_date):
     """
     ディレクトリを作成する
     """
-    dir_path = Path(f'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\output_{target_date.replace("-", "_")}')
+    dir_path = Path(
+        f'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\analyze_02_daily_nba_stats\\output\\output_{target_date}'
+    )
     if not dir_path.exists():
         dir_path.mkdir()
+    return dir_path
 
 
-def make_tsv_daily_each_game_pts_ranking(games_dict):
+def make_tsv_daily_each_game_pts_leader(games_dict, stat):
     """
     各試合のPTSランキングをTSVに吐き出す
     GAME_ID, PLAYER_ID, PLAYER_NAME, PLAYER_TEAM, TEAMS(VISITOR@HOME), PTS
     """
     results: List[str] = list()
-    header = ['GAME_ID', 'PLAYER_ID', 'PLAYER_NAME', 'PLAYER_TEAM', 'HOME_TEAM', 'VISITOR_TEAM', 'PTS']
+    header = [
+        'GAME_ID',
+        'HOME_TEAM_ABBREVIATION',
+        'VISITOR_TEAM_ABBREVIATION',
+        'HOME_TEAM_PTS',
+        'VISITOR_TEAM_PTS',
+        'HOME_TEAM_LEADER_PLAYER_ID',
+        'HOME_TEAM_LEADER_PLAYER_NAME',
+        f'HOME_TEAM_LEADER_{stat.upper()}',
+        'VISITOR_TEAM_LEADER_PLAYER_ID',
+        'VISITOR_TEAM_LEADER_PLAYER_NAME',
+        f'VISITOR_TEAM_LEADER_{stat.upper()}'
+        'GAME_LEADER_PLAYER_ID',
+        'GAME_LEADER_PLAYER_NAME',
+        'GAME_LEADER_PLAYER_TEAM',
+        f'GAME_LEADER_{stat.upper()}'
+    ]
+    results.append(header)
     for game_id, game in games_dict.items():
-        if game.home_team_info.team_leaders >= game.visitor_team_info.team_leaders:
-            leaders_by_game_id[game_id] = game.home_team_info.team_leaders
+        if getattr(game.home_team_info.team_leaders, stat) >= getattr(game.visitor_team_info.team_leaders, stat):
+            game_leader = game.home_team_info.team_leaders
         else:
-            leaders_by_game_id[game_id] = game.visitor_team_info.team_leaders
+            game_leader = game.visitor_team_info.team_leaders
 
+        results_per_game =[
+            game_id,
+            game.home_team_abbreviation,
+            game.visitor_team_abbreviation,
+            getattr(game.home_team_info, stat),
+            getattr(game.visitor_team_info, stat),
+            getattr(game.home_team_info.team_leaders, f'{stat}_player_id'),
+            getattr(game.home_team_info.team_leaders, f'{stat}_player_name'),
+            getattr(game.home_team_info.team_leaders, stat),
+            getattr(game.visitor_team_info.team_leaders, f'{stat}_player_id'),
+            getattr(game.visitor_team_info.team_leaders, f'{stat}_player_name'),
+            getattr(game.visitor_team_info.team_leaders, stat),
+            getattr(game_leader, f'{stat}_player_id'),
+            getattr(game_leader, f'{stat}_player_name'),
+            game_leader.team_abbreviation,
+            getattr(game_leader, stat),
+        ]
+        results.append(results_per_game)
+    for result in results:
+        print(result)
+    return results
+
+
+def make_tsv_daily_each_game_pts_ranking(game_dict: str, stat: str) -> List[str]:
+    """
+    statの得点ランキングのTSVを出力
+    """
+    results: List[str] = list()
+    header = [
+        'GAME_ID',
+        'HOME_TEAM_ABBREVIATION',
+        'VISITOR_TEAM_ABBREVIATION',
+    ]
+    # ランキング
+    for i in range(1, 10 + 1):
+        header.append(f'PLAYER_ID_{i}')
+        header.append(f'PLAYER_NAME_{i}')
+        header.append(f'PLAYER_TEAM_ABBREVIATION_{i}')
+        header.append(f'PLAYER_stats_{i}')
+        header.append(f'PLAYER_rank_{i}')  # ランクに重複を許すため, このカラムで制御する
+    results.append(header)
+    for game_id, game in games_dict.items():
+        players = []
+        print(game_id, game)
+        print(game.home_team_info.player_stats)
+        for player in game.home_team_info.player_stats:
+            players.append((player, game.home_team_abbreviation))
+        for player in game.visitor_team_info.player_stats:
+            players.append((player, game.visitor_team_abbreviation))
+        # statsが高い順に並び替え
+        players.sort(key=lambda x: -getattr(x[0], stat) if getattr(x[0], stat) else 0)
+        result = []
+        for i, (p, abbreviation) in enumerate(players[:10]):
+            result.append(game_id)
+            result.append(game.home_team_abbreviation)
+            result.append(game.visitor_team_abbreviation)
+            result.append(p.player_id)
+            result.append(p.player_name)
+            result.append(abbreviation)
+            result.append(getattr(p, stat))
+            result.append(i)
+        results.append(result)
+    return results
 
 
 if __name__ == '__main__':
-
     today = datetime.datetime.now().date()  # 2022-01-12
     yesterday = today + datetime.timedelta(days=-2)  # 2022-01-11
-    games_dict: Dict[str, Game] = daily_info(yesterday)
+    target_date = yesterday
+    games_dict: Dict[str, Game] = daily_info(str(yesterday))
 
-    # 毎日の得点ランキングをTSVに吐き出す
-    make_tsv_daily_each_game_pts_ranking(games_dict)
+    # WORKING_ROOT \
+    #     = Path(f'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\analyze_02_daily_nba_stats\\{target_date}')
+
+    # 作業ディレクトリの作成
+    output_dir = make_initial_enviroment(str(target_date))
+
+    # 毎日の得点の各チームのリーダー（主にサムネ用になると思う）
+    target_stat = 'pts'
+    tsv_path = output_dir / f'daily_pts_leaders_{target_date}_{target_stat}.tsv'
+    results: List[str] = make_tsv_daily_each_game_pts_leader(games_dict, stat=target_stat)
+    write_tsv(tsv_path, results)
+
+    # 毎日の得点ランキング
+    target_stat = 'pts'
+    tsv_path = output_dir / f'daily_pts_ranking_{target_date}_{target_stat}.tsv'
+    results: List[str] = make_tsv_daily_each_game_pts_ranking(games_dict, stat=target_stat)
+    write_tsv(tsv_path, results)
+
+
+
 
