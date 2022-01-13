@@ -208,17 +208,14 @@ def _convert_datetime_to_mmddyyyy(d: str):
     yyyy, mm, dd = d.split('-')
     return f'{mm}/{dd}/{yyyy}'
 
-def daily_info():
-
-    today = datetime.datetime.now().date() # 2022-01-12
-    yesterday = today + datetime.timedelta(days=-2) # 2022-01-11
+def daily_info(target_date: str):
 
     games_dict: List[Game] = dict()
     ranking_dict: Dict[str, List[TeamRanking]] = {'East': [], 'West': []}
 
     # d日のGAME_ID, この日の試合番号, 試合時刻取得, HOME_TEAM_ID, VISITOR_TEAM_ID
     from nba_api.stats.endpoints import scoreboardv2
-    response = scoreboardv2.ScoreboardV2(game_date=str(yesterday)).get_normalized_dict()
+    response = scoreboardv2.ScoreboardV2(game_date=target_date).get_normalized_dict()
     # ['GameHeader', 'LineScore', 'SeriesStandings', 'LastMeeting', 'EastConfStandingsByDay',
     # 'WestConfStandingsByDay', 'Available', 'TeamLeaders', 'TicketLinks', 'WinProbability']
 
@@ -329,9 +326,7 @@ def daily_info():
     from nba_api.stats.endpoints import boxscorescoringv2
     from nba_api.stats.endpoints import boxscoretraditionalv2
 
-    for game_id, _game in games_dict.items():
-        print('-' * 30)
-        print(game_id, _game)
+    for game_id in games_dict.keys():
 
         # 各ゲームの情報
 
@@ -344,7 +339,7 @@ def daily_info():
         response = boxscoretraditionalv2.BoxScoreTraditionalV2(game_id=game_id).get_normalized_dict()
         # # 各プレイヤーのスタッツ
         home_team_players_stats_list = []
-        visitor_team_players_stats_list = []
+        road_team_players_stats_list = []
         for i, _ in enumerate(response['PlayerStats']):
             player_stats = PlayerStats(
                 player_id=_['PLAYER_ID'],
@@ -352,43 +347,96 @@ def daily_info():
                 nickname=_['NICKNAME'],
                 start_position=_['START_POSITION'],
                 comment=_['COMMENT'],
-                min=_['COMMENT'],
-                fgm: Optional[int]
-                fga: Optional[int]
-                fg_pct: Optional[float]
-                fg3m: Optional[int]
-                fg3a: Optional[int]
-                fg3_pct: Optional[float]
-                ftm: Optional[int]
-                fta: Optional[int]
-                ft_pct: Optional[float]
-                oreb: Optional[int]
-                dreb: Optional[int]
-                reb: Optional[int]
-                ast: Optional[int]
-                stl: Optional[int]
-                blk: Optional[int]
-                to: Optional[int]
-                pf: Optional[int]
-                pts: Optional[int]
-                plus_minus: Optional[float]
+                min=_['MIN'],
+                fgm=_['FGM'],
+                fga=_['FGA'],
+                fg_pct=_['FG_PCT'],
+                fg3m=_['FG3M'],
+                fg3a=_['FG3A'],
+                fg3_pct=_['FG3_PCT'],
+                ftm=_['FTM'],
+                fta=_['FTA'],
+                ft_pct=_['FT_PCT'],
+                oreb=_['OREB'],
+                dreb=_['DREB'],
+                reb=_['REB'],
+                ast=_['AST'],
+                stl=_['STL'],
+                blk=_['BLK'],
+                to=_['TO'],
+                pf=_['PF'],
+                pts=_['PTS'],
+                plus_minus=_['PLUS_MINUS'],
             )
             if game.home_team_id == _['TEAM_ID']:
                 home_team_players_stats_list.append(player_stats)
             else:
                 road_team_players_stats_list.append(player_stats)
         games_dict[game_id].home_team_info.player_stats = home_team_players_stats_list
-        games_dict[game_id].visitor_team_info.player_stats = visitor_team_players_stats_list
-
-
+        games_dict[game_id].visitor_team_info.player_stats = road_team_players_stats_list
 
         # # 各チームのスタッツ
         for i, _ in enumerate(response['TeamStats']):
-            print(i, _)
+            team_stats = TeamStats(
+                min=_['MIN'],
+                fgm=_['FGM'],
+                fga=_['FGA'],
+                fg_pct=_['FG_PCT'],
+                fg3m=_['FG3M'],
+                fg3a=_['FG3A'],
+                fg3_pct=_['FG3_PCT'],
+                ftm=_['FTM'],
+                fta=_['FTA'],
+                ft_pct=_['FT_PCT'],
+                oreb=_['OREB'],
+                dreb=_['DREB'],
+                reb=_['REB'],
+                ast=_['AST'],
+                stl=_['STL'],
+                blk=_['BLK'],
+                to=_['TO'],
+                pf=_['PF'],
+                pts=_['PTS'],
+                plus_minus=_['PLUS_MINUS'],
+            )
+            if game.home_team_id == _['TEAM_ID']:
+                games_dict[game_id].home_team_info.team_stats = team_stats
+            else:
+                games_dict[game_id].visitor_team_info.team_stats = team_stats
+
+        return games_dict
+
+
+def make_initial_enviroment(target_date):
+    """
+    ディレクトリを作成する
+    """
+    dir_path = Path(f'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\output_{target_date.replace("-", "_")}')
+    if not dir_path.exists():
+        dir_path.mkdir()
+
+
+def make_tsv_daily_each_game_pts_ranking(games_dict):
+    """
+    各試合のPTSランキングをTSVに吐き出す
+    GAME_ID, PLAYER_ID, PLAYER_NAME, PLAYER_TEAM, TEAMS(VISITOR@HOME), PTS
+    """
+    results: List[str] = list()
+    header = ['GAME_ID', 'PLAYER_ID', 'PLAYER_NAME', 'PLAYER_TEAM', 'HOME_TEAM', 'VISITOR_TEAM', 'PTS']
+    for game_id, game in games_dict.items():
+        if game.home_team_info.team_leaders >= game.visitor_team_info.team_leaders:
+            leaders_by_game_id[game_id] = game.home_team_info.team_leaders
+        else:
+            leaders_by_game_id[game_id] = game.visitor_team_info.team_leaders
 
 
 
 if __name__ == '__main__':
 
-    info = daily_info()
+    today = datetime.datetime.now().date()  # 2022-01-12
+    yesterday = today + datetime.timedelta(days=-2)  # 2022-01-11
+    games_dict: Dict[str, Game] = daily_info(yesterday)
+
+    # 毎日の得点ランキングをTSVに吐き出す
+    make_tsv_daily_each_game_pts_ranking(games_dict)
 
