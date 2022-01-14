@@ -133,7 +133,6 @@ def calc_sum(stats_list_by_plyer_id, target_stats_list: List[str]):
         def sum_stats_by_stats(self, val):
             self._sum_stats_by_stats = val
 
-
     results: Dict[int, int] = defaultdict(int)
     for _player_id, _stats_list in stats_list_by_plyer_id.items():
         _player_name = _stats_list[0].PLAYER_NAME
@@ -149,6 +148,8 @@ def calc_sum(stats_list_by_plyer_id, target_stats_list: List[str]):
                 target_stats = getattr(_stats_per_game, target_stats_type)
                 sum_target_stats_dict[target_stats_type] += target_stats if target_stats else 0
         result.sum_stats_by_stats = sum_target_stats_dict
+        # Did Not Dress, Not With Team, Did Not Play の場合は全スタッツ=Noneで試合数として計上されてしまっているため試合数から省く
+        result.sum_stats_by_stats['G'] = len([_ for _ in _stats_list if _.MIN is not None])
         results[_player_id] = result
 
     return results
@@ -190,7 +191,6 @@ if __name__ == '__main__':
             if stats not in player_stats_in_season[player_id]:
                 player_stats_in_season[player_id].append(stats)
 
-
     # 合計を計算する
     target_stats_list = [
         'PTS',
@@ -206,7 +206,7 @@ if __name__ == '__main__':
         'FG3M',
         'FG3A',
         'FTM',
-        'FTA'
+        'FTA',
     ]
     sum_stats_by_player_id: Dict[int, int] = calc_sum(
         player_stats_in_season,
@@ -214,7 +214,7 @@ if __name__ == '__main__':
     )
 
     # tsvに埋め込む
-    rows: List[List[str]] = [['PLAYER_ID', 'PLAYER_NAME', 'TEAM_ABBREVIATION'] + target_stats_list]
+    rows: List[List[str]] = [['PLAYER_ID', 'PLAYER_NAME', 'TEAM_ABBREVIATION'] + target_stats_list + ['G']]
     for result in sum_stats_by_player_id.values():
         player_id = result.player_id
         player_name = result.player_name
@@ -222,5 +222,14 @@ if __name__ == '__main__':
         row: List = [player_id, player_name, team_abbreviation]
         for stats_type in target_stats_list:
             row.append(result.sum_stats_by_stats[stats_type])
+        row.append(result.sum_stats_by_stats['G'])
         rows.append(row)
     write_tsv(tsv_path, rows)
+
+
+    # 確認用（LeBron）
+    # with open(path_pickle, 'rb') as p:
+    #     stats_list_by_player_id = pickle.load(p)
+    #     for i, stats in enumerate(stats_list_by_player_id[2544]):
+    #         if (type(stats.PTS) != int and i % 2 == 0) or (type(stats.PTS) == 0 and i % 2== 0):
+    #             print(i, stats)
