@@ -82,6 +82,7 @@ def get_players_info(season, stats_type):
     """
     from nba_api.stats.endpoints import leaguegamefinder
     from nba_api.stats.endpoints import boxscoretraditionalv2
+    from nba_api.stats.library.parameters import LeagueIDNullable
 
     # PlayerStats
     results: Dict[int, List[PlayerStats]] = defaultdict(list)
@@ -92,7 +93,8 @@ def get_players_info(season, stats_type):
     # 今シーズンのゲームをすべて取得
     response = leaguegamefinder.LeagueGameFinder(
         season_nullable=season,
-        season_type_nullable='Regular Season'
+        season_type_nullable='Regular Season',
+        league_id_nullable=LeagueIDNullable.nba,
     ).get_normalized_dict()
     list_len = len(response['LeagueGameFinderResults'])
 
@@ -155,7 +157,7 @@ def calc_sum(stats_list_by_plyer_id, target_stats_list: List[str]):
 if __name__ == '__main__':
 
     target_date = datetime.datetime.today().date()
-    target_date = target_date + datetime.timedelta(days=-1)
+    # target_date = target_date + datetime.timedelta(days=-1)
 
     working_dir = Path('C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\analyze_03_season_stats_ranking')
     output_dir_path = working_dir / f'results_{str(target_date)}'
@@ -174,8 +176,8 @@ if __name__ == '__main__':
     # スタッツリストを集計
     if not path_pickle.exists():
         player_stats_in_season: Dict[int, Dict[int, str]] = get_players_info(season='2021-22', stats_type=stats_type)
-        # with open(path_pickle, 'wb') as p:
-        #     pickle.dump(player_stats_in_season)
+        with open(path_pickle, 'wb') as p:
+            pickle.dump(player_stats_in_season, p)
     else:
         with open(path_pickle, 'rb') as p:
             player_stats_in_season: Dict[int, Dict[int, str]] = pickle.load(p)
