@@ -10,7 +10,7 @@ def write_tsv(tsv_path: Path, rows: List[Any]) -> None:
     :return:
     """
     with open(tsv_path, 'w') as f:
-        writer = csv.writer(f, delimiter='\t')
+        writer = csv.writer(f, delimiter='\t', lineterminator='\n')
         for row in rows:
             writer.writerow(row)
 
