@@ -1,8 +1,10 @@
 from typing import List
 from pathlib import Path
+
+import numpy as np
 from PIL import Image
 import cv2
-
+from typing import Tuple
 
 def concatenate_images_with_PIL(paths: List[Path], output_file_path: Path, stride=0) -> None:
     """
@@ -18,7 +20,11 @@ def concatenate_images_with_PIL(paths: List[Path], output_file_path: Path, strid
     result_image.save(output_file_path)
 
 
-def concatenate_images_with_cv2(paths: List[Path], outupt_file_path: Path, mode: str = 'h', stride=0) -> None:
+def concatenate_images_with_cv2(
+        paths: List[Path],
+        outupt_file_path: Path,
+        mode: str = 'h',
+) -> None:
     """
     CV2.IMREAD_UNCHANGEDを使い, 透過画像もそのまま読み込める
     """
@@ -33,5 +39,18 @@ def concatenate_images_with_cv2(paths: List[Path], outupt_file_path: Path, mode:
                 result_image = cv2.hconcat([result_image, another_image])
             if mode == 'v':
                 result_image = cv2.vconcat([result_image, another_image])
+
     outupt_file_path = str(outupt_file_path)
     cv2.imwrite(outupt_file_path, result_image)
+
+
+def concatenate_images_with_ndarray(
+        img1: np.ndarray,
+        img2: np.ndarray,
+        mode: str = 'h'
+) -> np.ndarray:
+    if mode == 'h':
+        result_img = cv2.hconcat([img1, img2])
+    else:
+        result_img = cv2.vconcat([img1, img2])
+    return result_img

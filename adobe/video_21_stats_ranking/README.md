@@ -26,3 +26,8 @@ python make_synthetic_images_player_and_logo.py
 ```commandline
 python make_canvas_by_photoshop.py
 ```
+
+### 画像を横並びに結合する
+```commandline
+python make_concat_canvas.py
+```
