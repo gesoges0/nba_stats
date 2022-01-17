@@ -7,7 +7,8 @@ import argparse
 from pathlib import Path
 
 # nba_statsの階層でutils等をimportする
-sys.path.append('/home/gesogeso/PycharmProjects/nba_stats/')
+# sys.path.append('/home/gesogeso/PycharmProjects/nba_stats/')
+sys.path.append('C:\\Users\\elasticnet\\Desktop\\nba_stats')
 print(sys.path)
 from utils.operate_tsv import write_tsv
 from utils.structures import Player

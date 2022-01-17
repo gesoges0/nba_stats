@@ -12,14 +12,14 @@ RANK_N = 50
 
 if __name__ == '__main__':
     # 背景色と文字を変えるためのtemplate psd
-    template_psd_path = 'X:\\Adobe\\PremierePro\\19_lineups\\images\\lineups_20220109\\sozai_03\\template.psd'
+    template_psd_path = 'X:\\Adobe\\PremierePro\\19_lineups\\images\\lineups_20220117\\sozai_03\\template.psd'
 
     # lineupのランキングのtsv
     tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\' \
-               'analyze_00_longest_lineup\\MIN_20220109\\ranking_lineups.tsv'
+               'analyze_00_longest_lineup\\MIN_20220117\\ranking_lineups.tsv'
 
     # 出力先
-    output_dir_path = Path('X:\\Adobe\\PremierePro\\19_lineups\\images\\lineups_20220109\\sozai_03\\output')
+    output_dir_path = Path('X:\\Adobe\\PremierePro\\19_lineups\\images\\lineups_20220117\\sozai_03\\output')
 
     # 目的のスタッツ
     target_stat = 'MIN'
