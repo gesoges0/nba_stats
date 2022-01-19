@@ -9,7 +9,7 @@ from adobe.tools.other.concatenate_imgs import concatenate_images_with_cv2
 
 if __name__ == '__main__':
     # 作業ディレクトリ
-    working_dir_root = Path('X:\\Adobe\\PremierePro\\19_lineups\\images\\lineups_20220109')
+    working_dir_root = Path('X:\\Adobe\\PremierePro\\19_lineups\\images\\lineups_20220117')
 
     # 入力画像ディレクトリ
     input_images_dir = working_dir_root / 'sozai_04'
