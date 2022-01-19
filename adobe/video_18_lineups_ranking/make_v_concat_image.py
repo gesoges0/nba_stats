@@ -21,6 +21,6 @@ if __name__ == '__main__':
     # 画像結合
     image_paths = [str(input_image_path) for input_image_path in input_images_dir.iterdir()]
     image_paths.sort(key=lambda x: int(x.split('\\')[-1].replace('.png', '')))
-    image_paths = image_paths[:50]
+    image_paths = image_paths[:20]
     concatenate_images_with_cv2(image_paths, output_image_path, mode='v')
 
