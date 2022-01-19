@@ -1,15 +1,15 @@
 ## video_21
 
+### 順位tsvを更新
+```commandline
+cd nba_stats/analysis/analyze_03_season_stats_ranking
+python get_season_stats_ranking.py
+```
 
 ### curl
-```
-python curl_imgs.py
-```
-
-### re-curl
-上記コマンドで拾いきれなかった画像を再び拾う
 ```commandline
-python re-curl_imgs.py
+cd nba_stats/adobe/video_21_stats_ranking
+python curl_imgs.py
 ```
 
 ### ベースの画像をつくる（チームカラーの画像）
