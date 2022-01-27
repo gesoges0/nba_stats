@@ -10,13 +10,13 @@ from adobe.tools.other.concatenate_imgs import concatenate_images_with_cv2
 
 if __name__ == '__main__':
     tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\' \
-               'analyze_00_longest_lineup\\MIN_20220117\\ranking_lineups.tsv'
+               'analyze_00_longest_lineup\\MIN_20220127\\ranking_lineups.tsv'
     working_dir_path = Path('X:\\Adobe\\PremierePro\\19_lineups')
-    input_img_path_format = str(working_dir_path / 'images\\lineups_20220117\\sozai_01\\output\\{}.png')
+    input_img_path_format = str(working_dir_path / 'images\\lineups_20220127\\sozai_01\\output\\{}.png')
 
-    output_dir = working_dir_path / 'images\\lineups_20220117\\sozai_02\\output'
-
-
+    output_dir = working_dir_path / 'images\\lineups_20220127\\sozai_02\\output'
+    if not output_dir.exists():
+        output_dir.mkdir()
 
     BEST_N = 50
 
@@ -37,6 +37,7 @@ if __name__ == '__main__':
                 assert False, f'{input_img_path} not exists !'
             canvas_image_paths.append(input_img_path)
         output_file_path = output_dir / f'{i}.png'
+        print(output_file_path)
         concatenate_images_with_cv2(canvas_image_paths, output_file_path)
 
     print('end!')

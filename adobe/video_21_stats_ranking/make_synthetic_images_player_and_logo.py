@@ -13,11 +13,18 @@ class Rank:
     rank: int
     info: Dict[str, Any]
 
-
 def get_ranking(rows: List[Dict[str, str]], target_key) -> List[Rank]:
+
+    def _val(s, g):
+        return s / g
+
     results: List[Rank] = list()
     # 得点の低い順にソート
-    unique_vals = list(set([int(_[target_key]) for _ in rows]))
+    unique_vals = list(
+        set(
+            [_val(int(_[target_key]), int(_['G'])) if int(_['G']) else -1 for _ in rows]
+        )
+    )
     unique_vals.sort(reverse=True)
     # 全体の順位
     rank_all = 1
@@ -26,7 +33,9 @@ def get_ranking(rows: List[Dict[str, str]], target_key) -> List[Rank]:
         count = 0
         # 得点 val の選手に rankを付ける
         for row in rows:
-            if int(row[target_key]) == val:
+            if int(row['G']) < 32:
+                continue
+            if _val(int(row[target_key]), int(row['G'])) == val:
                 rank = Rank(rank_all, row)
                 results.append(rank)
                 count += 1
@@ -36,10 +45,10 @@ def get_ranking(rows: List[Dict[str, str]], target_key) -> List[Rank]:
 
 if __name__ == '__main__':
 
-    target_date = '2022-01-15'
+    target_date = '2022-01-19'
     target_stats_list = \
         ['PTS', 'AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA', 'G']
-    RANK_LIMITATION = 50
+    RANK_LIMITATION = 100
     working_dir = Path('X:\\Adobe\\PremierePro\\21_StatsRanking\\imgs')
 
     # base(team_color)画像のpath
@@ -72,13 +81,15 @@ if __name__ == '__main__':
         rankings_limit = [rank for rank in rankings if rank.rank <= limit_rank]
 
         for rank in rankings_limit:
+            print(target_stats, rank)
             base_img_path = base_img_dir / f'{rank.info["TEAM_ABBREVIATION"]}.png'
             team_logo_path = team_logo_dir / f'{rank.info["TEAM_ABBREVIATION"]}.png'
             player_img_path = player_img_dir / f'{rank.info["PLAYER_ID"]}.png'
             assert base_img_path.exists(), f'{base_img_path} does not exists!'
             assert team_logo_path.exists(), f'{team_logo_path} does not exists!'
-            assert player_img_path.exists(), f'{player_img_path} does not exists!'
-
+            # assert player_img_path.exists(), f'{player_img_path} does not exists!'
+            if not player_img_path.exists():
+                continue
 
             base_img = cv2.imread(str(base_img_path), cv2.IMREAD_UNCHANGED)
             team_logo_img = cv2.imread(str(team_logo_path), cv2.IMREAD_UNCHANGED)
