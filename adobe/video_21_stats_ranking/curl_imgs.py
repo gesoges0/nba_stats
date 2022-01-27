@@ -10,11 +10,12 @@ sys.path.append('C:\\Users\\elasticnet\\Desktop\\nba_stats\\utils')
 from operate_tsv import read_tsv
 
 if __name__ == '__main__':
+    target_date = '2022-01-19'  # tsvの日付と合わせる
+
     tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\' \
-               'analyze_03_season_stats_ranking\\results_2022-01-15\\results_tsv_2022-01-15.tsv'
+               f'analyze_03_season_stats_ranking\\results_{target_date}\\results_tsv_{target_date}.tsv'
     working_dir_path = Path(f'X:\\Adobe\\PremierePro\\21_StatsRanking')
 
-    target_date = '2022-01-15' # tsvの日付と合わせる
     output_dir_path = working_dir_path / f'imgs\\imgs_{target_date}\\sozai_00'
     if not output_dir_path.exists():
         output_dir_path.mkdir()

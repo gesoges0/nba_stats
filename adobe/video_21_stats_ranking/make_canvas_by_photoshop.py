@@ -47,11 +47,12 @@ def replace_and_output_ps(
 
 if __name__ == '__main__':
 
-    target_date = '2022-01-15'
+    target_date = '2022-01-19'
 
-    target_stats_list = \
-        ['AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA', 'G']
-        # ['PTS']
+    target_stats_list = ['FG3M']
+        # ['AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA']
+        # PTS, G
+
 
     working_dir = Path('X:\\Adobe\\PremierePro\\21_StatsRanking\\imgs')
 
@@ -83,6 +84,8 @@ if __name__ == '__main__':
             img_name = str(img_path).split('\\')[-1]
             rank, stats, player_id = img_name.replace('.png', '').split('_')
             print(rank, stats, player_id)
+            if int(rank) > 50:
+                continue
 
             # 選手のfirst_name, last_nameを取得
             first_name = player_info_by_player_id[player_id]['first_name']

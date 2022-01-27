@@ -14,10 +14,10 @@ from adobe.tools.other.utils import write_img
 
 if __name__ == '__main__':
 
-    target_date = '2022-01-15'
+    target_date = '2022-01-19'
 
-    target_stats_list = \
-        ['PTS', 'AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA', 'G']
+    target_stats_list = ['FG3M']
+        # ['PTS', 'AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA', 'G']
 
     working_dir = Path('X:\\Adobe\\PremierePro\\21_StatsRanking\\imgs')
 
@@ -53,9 +53,12 @@ if __name__ == '__main__':
         # 画像を取得してPER GAMEのスタッツ順に並べかえ（大きい順に）
         img_paths = [img_path for img_path in img_dir.glob('*.png')]
         img_paths.sort(key=lambda x:
-            (int(stats_by_player_id[str(x).replace('.png', '').split('\\')[-1].split('_')[-1]][f'{target_stats}']),
-            int(stats_by_player_id[str(x).replace('.png', '').split('\\')[-1].split('_')[-1]][f'{target_stats}'])
-            / int(stats_by_player_id[str(x).replace('.png', '').split('\\')[-1].split('_')[-1]]['G']))
+            (
+                -int(str(x).replace('.png', '').split('\\')[-1].split('_')[0]),
+                int(stats_by_player_id[str(x).replace('.png', '').split('\\')[-1].split('_')[-1]][f'{target_stats}']),
+                int(stats_by_player_id[str(x).replace('.png', '').split('\\')[-1].split('_')[-1]][f'{target_stats}'])
+                / int(stats_by_player_id[str(x).replace('.png', '').split('\\')[-1].split('_')[-1]]['G'])
+             )
         )
 
         # 各画像を左から結合していく

@@ -10,9 +10,9 @@ from operate_tsv import read_tsv
 
 if __name__ == '__main__':
     tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\' \
-               'analyze_00_longest_lineup\\PTS_20220117\\unique_players_list.tsv'
+               'analyze_00_longest_lineup\\MIN_20220127\\unique_players_list.tsv'
     working_dir_path = Path(f'X:\\Adobe\\PremierePro\\19_lineups')
-    output_dir_path = working_dir_path / 'images\\lineups_20220117\\sozai_00_'
+    output_dir_path = working_dir_path / 'images\\lineups_20220127\\sozai_00'
     if not output_dir_path.exists():
         output_dir_path.mkdir()
 

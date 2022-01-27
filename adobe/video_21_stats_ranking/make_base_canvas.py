@@ -9,7 +9,7 @@ from utils.static import HEX_COLOR_CODE_BY_TEAM_ABBREVIATION
 if __name__ == '__main__':
 
     # 作業場
-    target_date = '2022-01-15'
+    target_date = '2022-01-19'
     working_dir = Path(f'X:\\Adobe\\PremierePro\\21_StatsRanking\\imgs\\imgs_{target_date}\\sozai_01')
     if not working_dir.exists():
         working_dir.mkdir()

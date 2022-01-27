@@ -19,11 +19,11 @@ class TmpPlayer(NamedTuple):
 
 if __name__ == '__main__':
     tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\' \
-               'analyze_00_longest_lineup\\MIN_20220117\\unique_players_list.tsv'
+               'analyze_00_longest_lineup\\MIN_20220127\\unique_players_list.tsv'
     working_dir_path = Path(f'X:\\Adobe\\PremierePro\\19_lineups')
-    output_dir_path = working_dir_path / 'images\\lineups_20220117\\sozai_01\\output'
-    template_psd_path = working_dir_path / 'images\\lineups_20220117\\sozai_01\\template.psd'
-    imgs_dir = working_dir_path / f'images\\lineups_20220117\\sozai_00'
+    output_dir_path = working_dir_path / 'images\\lineups_20220127\\sozai_01\\output'
+    template_psd_path = working_dir_path / 'images\\lineups_20220127\\sozai_01\\template.psd'
+    imgs_dir = working_dir_path / f'images\\lineups_20220127\\sozai_00'
 
     # first_name, last_nameを引くために, player情報を持つ字書を宣言
     all_players_tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\static\\players\\all_20220103.tsv'
@@ -49,8 +49,7 @@ if __name__ == '__main__':
         # 各選手に対して
         for j, target_player in enumerate(target_player_list):
             print(j, target_player)
-
-            if j < 297:
+            if (output_dir_path / f'{target_player.player_id}.png').exists():
                 continue
 
             # 各レイヤに対して
