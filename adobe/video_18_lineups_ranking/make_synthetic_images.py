@@ -11,27 +11,27 @@ from utils.operate_tsv import tsv_to_dict_of_list
 from adobe.tools.other.make_synthetic import make_synthetic
 from adobe.tools.other.utils import write_img
 
-MAX_N = 300
+MAX_N = 50
 
 if __name__ == '__main__':
     # 作業ディレクトリ
     working_dir_root = Path('X:\\Adobe\\PremierePro\\19_lineups\\images')
 
     # 背景画像ディレクトリ
-    bg_images_dir = working_dir_root / 'canvases_sozai7\\output'
+    bg_images_dir = working_dir_root / 'lineups_20220127\\sozai_03\\output'
 
     # lineup画像のディレクトリ
-    lineup_images_dir = working_dir_root / 'canvases_sozai4'
+    lineup_images_dir = working_dir_root / 'lineups_20220127\\sozai_02\\output'
 
     # チームロゴ画像のディレクトリ
     team_logo_images_dir = working_dir_root / 'logo_png_resized'
 
     # output
-    output_images_dir = working_dir_root / 'canvases_sozai8'
+    output_images_dir = working_dir_root / 'lineups_20220127\\sozai_04'
 
     # 順位のTSV
     ranking_tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\' \
-                       'analyze_00_longest_lineup\\MIN_20220103\\ranking_lineups.tsv'
+                       'analyze_00_longest_lineup\\MIN_20220127\\ranking_lineups.tsv'
 
     # 順位TSVを読み込む
     ranking_lineups: List[Dict[str, str]] = tsv_to_dict_of_list(ranking_tsv_path)
