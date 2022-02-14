@@ -8,25 +8,32 @@ sys.path.append('C:\\Users\\elasticnet\\Desktop\\nba_stats')
 from utils.static import HEX_COLOR_CODE_BY_TEAM_ABBREVIATION
 from utils.operate_tsv import tsv_to_dict_of_list
 
-RANK_N = 300
+RANK_N = 50
 
 if __name__ == '__main__':
     # 背景色と文字を変えるためのtemplate psd
-    template_psd_path = 'X:\\Adobe\\PremierePro\\19_lineups\\images\\canvases_sozai7\\template.psd'
+    template_psd_path = 'X:\\Adobe\\PremierePro\\19_lineups\\images\\lineups_20220127\\sozai_03\\template.psd'
 
     # lineupのランキングのtsv
     tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\' \
-               'analyze_00_longest_lineup\\MIN_20220103\\ranking_lineups.tsv'
+               'analyze_00_longest_lineup\\MIN_20220127\\ranking_lineups.tsv'
 
     # 出力先
-    output_dir_path = Path('X:\\Adobe\\PremierePro\\19_lineups\\images\\canvases_sozai7\\output')
+    output_dir_path = Path('X:\\Adobe\\PremierePro\\19_lineups\\images\\lineups_20220127\\sozai_03\\output')
 
     # 目的のスタッツ
     target_stat = 'MIN'
+    target_stat_1 = 'PLUS_MINUS'
 
     # 目的スタッツのstrからの変換関数
     def _convert(_target_stat: str) -> str:
         return str(int(float(_target_stat)))
+
+    # unitのコンバーター
+    def _convert_unit(_unit: str) -> str:
+        if _unit == 'PLUS_MINUS':
+            return '+/-'
+        return _unit
 
 
     # 辞書リスト
@@ -41,12 +48,17 @@ if __name__ == '__main__':
         for i, info_dict in enumerate(rank_list[:RANK_N]):
             team_abbreviation = info_dict['TEAM_ABBREVIATION']
             bg_color_hex = HEX_COLOR_CODE_BY_TEAM_ABBREVIATION[team_abbreviation]
+
             rank = str(i + 1)
             if len(rank) == 1:
                 rank = '  ' + rank
             elif len(rank) == 2:
                 rank = ' ' + rank
+
+            # statが小数の場合の処理
             stat = _convert(info_dict[target_stat])
+            # statが小数の場合の処理
+            stat_1 = _convert(info_dict[target_stat_1])
 
             print(i, team_abbreviation, stat, bg_color_hex)
 
@@ -70,7 +82,17 @@ if __name__ == '__main__':
 
                 if layer.name == 'unit':
                     tmp = layer.name
-                    layer.textItem.contents = target_stat
+                    layer.textItem.contents = _convert_unit(target_stat)
+                    layer.name = tmp
+
+                if layer.name == 'stat_1':
+                    tmp = layer.name
+                    layer.textItem.contents = stat_1
+                    layer.name = tmp
+
+                if layer.name == 'unit_1':
+                    tmp = layer.name
+                    layer.textItem.contents = _convert_unit(target_stat_1)
                     layer.name = tmp
 
                 if layer.name == 'background':

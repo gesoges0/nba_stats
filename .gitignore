@@ -1,0 +1,9 @@
+.idea
+#.gitignore
+*.pyc
+.pytest_cache/
+#static/players/*.tsv
+images/
+
+analysis/analyze_06_lebron_pts_bar_chart_race/*.tsv
+analysis/analyze_06_lebron_pts_bar_chart_race/backup

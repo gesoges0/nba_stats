@@ -9,10 +9,10 @@ from adobe.tools.other.concatenate_imgs import concatenate_images_with_cv2
 
 if __name__ == '__main__':
     # 作業ディレクトリ
-    working_dir_root = Path('X:\\Adobe\\PremierePro\\19_lineups\\images')
+    working_dir_root = Path('X:\\Adobe\\PremierePro\\19_lineups\\images\\lineups_20220127')
 
     # 入力画像ディレクトリ
-    input_images_dir = working_dir_root / 'canvases_sozai8'
+    input_images_dir = working_dir_root / 'sozai_04'
 
     # 出力ディレクトリ
     yyyymmdd = get_current_datetime_with_yyyymmdd_format()

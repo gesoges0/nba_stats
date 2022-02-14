@@ -1,8 +1,13 @@
+import platform
 from glob import glob
 from pathlib import Path
 from typing import List, Dict
 
-ROOT = Path('/home/gesogeso/PycharmProjects/nba_stats')
+pf = platform.system()
+if pf == 'Linux':
+        ROOT = Path('/home/gesogeso/PycharmProjects/nba_stats')
+elif pf == 'Windows':
+        ROOT = Path('C:\\Users\\elasticnet\\Desktop\\nba_stats')
 
 HEX_COLOR_CODE_BY_TEAM_ABBREVIATION: Dict[str, str] = {
         'ATL': 'E03A3E',
