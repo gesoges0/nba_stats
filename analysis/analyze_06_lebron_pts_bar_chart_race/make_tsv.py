@@ -170,6 +170,6 @@ if __name__ == '__main__':
     else:
         analyzer.load_pickle()
 
-    # analyzer.output_to_tsv()
+    analyzer.output_to_tsv()
 
     analyzer.output_for_flourish()
