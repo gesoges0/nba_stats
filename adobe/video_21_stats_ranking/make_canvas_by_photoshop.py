@@ -47,11 +47,12 @@ def replace_and_output_ps(
 
 if __name__ == '__main__':
 
-    target_date = '2022-01-19'
+    target_date = '2022-02-21'
 
-    target_stats_list = ['FG3M']
+    target_stats_list = ['PTS']
         # ['AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA']
         # PTS, G
+        # FG3M
 
 
     working_dir = Path('X:\\Adobe\\PremierePro\\21_StatsRanking\\imgs')

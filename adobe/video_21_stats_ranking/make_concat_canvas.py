@@ -14,10 +14,9 @@ from adobe.tools.other.utils import write_img
 
 if __name__ == '__main__':
 
-    target_date = '2022-01-19'
+    target_date = '2022-02-21'
 
-    target_stats_list = ['FG3M']
-        # ['PTS', 'AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA', 'G']
+    target_stats_list = ['FG3M', 'PTS', 'AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA', 'G']
 
     working_dir = Path('X:\\Adobe\\PremierePro\\21_StatsRanking\\imgs')
 
