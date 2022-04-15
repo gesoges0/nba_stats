@@ -13,6 +13,7 @@ class Rank:
     rank: int
     info: Dict[str, Any]
 
+
 def get_ranking(rows: List[Dict[str, str]], target_key) -> List[Rank]:
 
     def _val(s, g):
@@ -33,7 +34,7 @@ def get_ranking(rows: List[Dict[str, str]], target_key) -> List[Rank]:
         count = 0
         # 得点 val の選手に rankを付ける
         for row in rows:
-            if int(row['G']) < 51:
+            if int(row['G']) < 55:
                 continue
             if _val(int(row[target_key]), int(row['G'])) == val:
                 rank = Rank(rank_all, row)
@@ -45,7 +46,7 @@ def get_ranking(rows: List[Dict[str, str]], target_key) -> List[Rank]:
 
 if __name__ == '__main__':
 
-    target_date = '2022-02-21'
+    target_date = '2022-04-11'
     target_stats_list = \
         ['PTS', 'AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA', 'G']
     RANK_LIMITATION = 100

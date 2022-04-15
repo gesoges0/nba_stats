@@ -10,7 +10,7 @@ sys.path.append('C:\\Users\\elasticnet\\Desktop\\nba_stats\\utils')
 from operate_tsv import read_tsv
 
 if __name__ == '__main__':
-    target_date = '2022-02-21'  # tsvの日付と合わせる
+    target_date = '2022-04-11'  # tsvの日付と合わせる
 
     tsv_path = 'C:\\Users\\elasticnet\\Desktop\\nba_stats\\analysis\\' \
                f'analyze_03_season_stats_ranking\\results_{target_date}\\results_tsv_{target_date}.tsv'

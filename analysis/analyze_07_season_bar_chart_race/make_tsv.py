@@ -57,7 +57,8 @@ if __name__ == '__main__':
     player_stats_per_game = leaguegamefinder.LeagueGameFinder(
         'P',
         season_nullable='2021-22',
-        season_type_nullable='Regular Season'
+        season_type_nullable='Regular Season',
+        league_id_nullable='00',
     ).get_normalized_dict()['LeagueGameFinderResults']
 
     # 各試合について各選手のスタッツを記録する
@@ -124,7 +125,7 @@ if __name__ == '__main__':
         if player_id not in remaining_player_ids:
             del player_sum_stats_each_date_by_player_id[player_id]
 
-    tsv_path = 'output.tsv'
+    tsv_path = f'output_{target_stats}.tsv'
     with open(tsv_path, 'w', encoding='utf-8') as f:
         writer = csv.writer(f, delimiter='\t', lineterminator='\n')
         writer.writerow(['PLAYER_NAME', 'PLAYER_IMG', 'TEAM'] + [date[5:].replace('-', '/') for date in dates])

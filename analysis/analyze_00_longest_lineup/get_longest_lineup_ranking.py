@@ -45,10 +45,25 @@ if __name__ == '__main__':
     lineups_ids: List[List[str]] = list()
     lineups_full_names: List[List[str]] = list()
     lineups_image_urls: List[List[str]] = list()
+    except_id_list = []
     for lineup in lineups[:BEST_N]:
         team_id = lineup['TEAM_ID']
         season_id = '2021'
         player_ids = lineup['GROUP_ID'][1:-1].split('-')
+        print(player_ids)
+
+        exept_list = [1630285, 1630314]
+        flag = False
+        for except_id in exept_list:
+            if str(except_id) in player_ids:
+                tmp = set(player_ids).remove(str(except_id))
+                flag = True
+        if flag:
+            if not tmp:
+                continue
+            else:
+                player_ids = list(set(player_ids).remove(str(except_id)))
+
         # id
         lineup_ids: List[str] = [players_by_id[player_id].id for player_id in player_ids]
         lineups_ids.append(lineup_ids)
@@ -108,6 +123,20 @@ if __name__ == '__main__':
         season_id = '2021'
         player_ids = lineup['GROUP_ID'][1:-1].split('-')
         for player_id in player_ids:
+
+            exept_list = [1630285, 1630314]
+            flag = False
+            for except_id in exept_list:
+                if str(except_id) in player_ids:
+                    tmp = set(player_ids).remove(str(except_id))
+                    flag = True
+            if flag:
+                if not tmp:
+                    continue
+                else:
+                    player_ids = list(set(player_ids).remove(str(except_id)))
+
+
             player_team_season_url = \
                 PlayerTeamSeasonUrl(player_id,
                                     players_by_id[player_id].full_name,
