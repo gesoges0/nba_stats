@@ -8,3 +8,7 @@ images/
 analysis/analyze_06_lebron_pts_bar_chart_race/*.tsv
 analysis/analyze_06_lebron_pts_bar_chart_race/backup
 analysis/analyze_06_lebron_pts_bar_chart_race/*.pickle
+analysis/analyze_03_season_stats_ranking/*/*.pickle
+analysis/analyze_08_season_team_ranking/*.bin
+
+nba_stats

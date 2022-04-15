@@ -14,7 +14,7 @@ from adobe.tools.other.utils import write_img
 
 if __name__ == '__main__':
 
-    target_date = '2022-02-21'
+    target_date = '2022-04-11'
 
     target_stats_list = ['FG3M', 'PTS', 'AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA', 'G']
 

@@ -47,10 +47,10 @@ def replace_and_output_ps(
 
 if __name__ == '__main__':
 
-    target_date = '2022-02-21'
+    target_date = '2022-04-11'
 
-    target_stats_list = ['PTS']
-        # ['AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA']
+    # target_stats_list = ['PTS']
+    target_stats_list = ['AST', 'REB', 'STL', 'BLK', 'DREB', 'OREB', 'TO', 'FGA', 'FGM', 'FG3M', 'FG3A', 'FTM', 'FTA']
         # PTS, G
         # FG3M
 
@@ -78,7 +78,7 @@ if __name__ == '__main__':
             output_dir.mkdir()
 
         # teamplate psd
-        template_psd_path = working_dir / f'imgs_{target_date}\\sozai_03\\template.psd'
+        template_psd_path = working_dir / f'imgs_{target_date}\\sozai_03\\template2.psd'
 
         # 各画像に関して
         for img_path in base_img_dir.glob('*.png'):

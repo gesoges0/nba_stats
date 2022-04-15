@@ -31,17 +31,25 @@ class Analyzer:
 
     def get_season_totals(self):
         """各選手のSeasonTotalsRegularSeasonを取得"""
+        err_cnt = 0
         for i, player in enumerate(self._all_players):
             print(i, i / len(self._all_players))
             print(player)
             self._season_totals_regular_season_by_season_by_player_id[player['id']] = dict()
 
-            player_profile: List[Dict[str, Any]] = playerprofilev2.PlayerProfileV2(player_id=player['id']).get_normalized_dict()['SeasonTotalsRegularSeason']
-            for _ in player_profile:
-                self._season_totals_regular_season_by_season_by_player_id[player['id']][_['SEASON_ID']] = _[self.stats]
-                # {'PLAYER_ID': 76001, 'SEASON_ID': '1990-91', 'LEAGUE_ID': '00', 'TEAM_ID': 1610612757, 'TEAM_ABBREVIATION': 'POR', 'PLAYER_AGE': 23.0, 'GP': 43, 'GS': 0, 'MIN': 290, 'FGM': 55, 'FGA': 116, 'FG_PCT': 0.474, 'FG3M': 0, 'FG3A': 0, 'FG3_PCT': 0.0, 'FTM': 25, 'FTA': 44, 'FT_PCT': 0.568, 'OREB': 27, 'DREB': 62, 'REB': 89, 'AST': 12, 'STL': 4, 'BLK': 12, 'TOV': 22, 'PF': 39, 'PTS': 135}
+            try:
+                player_profile: List[Dict[str, Any]] = playerprofilev2.PlayerProfileV2(player_id=player['id']).get_normalized_dict()['SeasonTotalsRegularSeason']
+                for _ in player_profile:
+                    self._season_totals_regular_season_by_season_by_player_id[player['id']][_['SEASON_ID']] = _[self.stats]
+                    # {'PLAYER_ID': 76001, 'SEASON_ID': '1990-91', 'LEAGUE_ID': '00', 'TEAM_ID': 1610612757, 'TEAM_ABBREVIATION': 'POR', 'PLAYER_AGE': 23.0, 'GP': 43, 'GS': 0, 'MIN': 290, 'FGM': 55, 'FGA': 116, 'FG_PCT': 0.474, 'FG3M': 0, 'FG3A': 0, 'FG3_PCT': 0.0, 'FTM': 25, 'FTA': 44, 'FT_PCT': 0.568, 'OREB': 27, 'DREB': 62, 'REB': 89, 'AST': 12, 'STL': 4, 'BLK': 12, 'TOV': 22, 'PF': 39, 'PTS': 135}
+            except Exception as e:
+                print('-' * 30)
+                print(err_cnt)
+                print(e)
+                print('-' * 30)
+                err_cnt += 1
 
-            time.sleep(5)
+            time.sleep(1)
 
     def save_pickle(self):
         with open(self._pickle_path, 'wb') as f:
